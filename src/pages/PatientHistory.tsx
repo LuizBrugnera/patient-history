@@ -14,7 +14,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Plus, Menu, MessageSquare, Settings } from "lucide-react";
+import {
+  Calendar,
+  Plus,
+  Menu,
+  MessageSquare,
+  Settings,
+  Trash2,
+} from "lucide-react";
 
 import {
   collection,
@@ -23,6 +30,8 @@ import {
   query,
   where,
   Timestamp,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 import { db } from "@/firebaseConfig";
@@ -34,6 +43,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 
 type Patient = {
@@ -72,6 +82,7 @@ export default function HistoryPatients() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [newFeedback, setNewFeedback] = useState("");
   const [password, setPassword] = useState<string | null>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   function formatDate(dateString: string): string {
     const [year, month, day] = dateString.split("-");
@@ -167,6 +178,18 @@ export default function HistoryPatients() {
     }
   };
 
+  const deletePatient = async () => {
+    if (patientSelected && password) {
+      try {
+        await deleteDoc(doc(db, `${password}_patients`, patientSelected.id));
+        setPatientSelected(null);
+        setConfirmDeleteOpen(false);
+      } catch (error) {
+        console.error("Erro ao deletar paciente:", error);
+      }
+    }
+  };
+
   if (!password) {
     return <PasswordPrompt onPasswordSet={setPassword} />;
   }
@@ -223,6 +246,7 @@ export default function HistoryPatients() {
           </DialogContent>
         </Dialog>
       </div>
+
       <div className="md:w-1/4 bg-white p-6 md:block hidden">
         <ListPatients
           patients={patients}
@@ -385,6 +409,39 @@ export default function HistoryPatients() {
                 </div>
               </TabsContent>
             </Tabs>
+
+            <div className="mt-6">
+              <Dialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="destructive" size="sm">
+                    <Trash2 className="w-4 h-4 mr-2" /> Excluir Paciente
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Confirmar Exclusão</DialogTitle>
+                  </DialogHeader>
+                  <p>
+                    Tem certeza que deseja excluir o paciente{" "}
+                    {patientSelected.name}?
+                  </p>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setConfirmDeleteOpen(false)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button variant="destructive" onClick={deletePatient}>
+                      Excluir
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           </>
         ) : (
           <div className="flex items-center justify-center h-full">
