@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# Patient History with Firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a patient management application built with React and Firebase, allowing you to view, add, and delete patients, treatments, and feedbacks. The application includes password-based authentication, and data is stored in Firebase Firestore with a password prefix for added security.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Patient Management**: Add, view, and delete patients.
+- **Treatment Management**: Add and view treatments for patients.
+- **Feedback Management**: Add and view feedback for patients.
+- **Password Protection**: The database is accessed with a password, which can be stored in `localStorage` for persistence.
+- **Confirmation Modal**: A confirmation modal is shown before deleting patients to ensure no accidental data removal.
+  
+## Technologies Used
 
-## Expanding the ESLint configuration
+- **React**: JavaScript library for building the user interface.
+- **Firebase Firestore**: NoSQL database for storing patients, treatments, and feedbacks.
+- **Firebase SDK**: For CRUD operations on Firestore.
+- **Tailwind CSS**: A CSS framework for quick, responsive styling.
+- **Lucide React**: A lightweight icon library for React.
+- **UI Components**: Custom UI components such as Dialog, Sheet, Tabs, and Avatar.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to Run the Project
 
-- Configure the top-level `parserOptions` property like this:
+### Prerequisites
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Node.js (version 14 or higher)
+- Firebase SDK configured for the project
+- Yarn or npm installed globally
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. Clone this repository:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   ```bash
+   git clone https://github.com/LuizBrugnera/patient-history.git
+
+2. Env Variables
+ 
+- VITE_FIREBASE_API_KEY
+- VITE_FIREBASE_AUTH_DOMAIN
+- VITE_FIREBASE_PROJECT_ID
+- VITE_FIREBASE_STORAGE_BUCKET
+- VITE_FIREBASE_MESSAGING_SENDER_ID
+- VITE_FIREBASE_APP_ID
+- VITE_FIREBASE_MEASUREMENT_ID
